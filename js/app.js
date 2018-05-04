@@ -81,6 +81,32 @@ function init(){
        operando2 = display.textContent;
        resolver();
      }
-
-
+}
+function limpiar() {
+  display.textContent = "";
+}
+function resetear() {
+  display.textContent = "";
+  operando1 = 0;
+  operando2 = 0;
+  operador = "";
+}
+function resolver(){
+  var res = 0;
+  switch(operador){
+    case "+":
+      res = parseFloat(operando1) + parseFloat(operando2);
+      break;
+    case "-":
+      res = parseFloat(operando1) - parseFloat(operando2);
+      break;
+    case "*":
+      res = parseFloat(operando1) - parseFloat(operando2);
+      break;
+    case "/":
+      res = parseFloat(operando1) - parseFloat(operando2);
+      break;
+  }
+  resetear();
+  display.textContent = res;
 }
