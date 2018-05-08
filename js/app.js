@@ -7,8 +7,9 @@ function init(){
      var display = document.getElementById('display');
      var reset = document.getElementById('on');
      var signo = document.getElementById('sign');
-     var divicion = document.getElementById('dividido');
-     var multipliacion = document.getElementById('por');
+     var division = document.getElementById('dividido');
+     var raiz = document.getElementById('raiz');
+     var multiplicacion = document.getElementById('por');
      var resta = document.getElementById('menos');
      var suma = document.getElementById('mas');
      var punto = document.getElementById('punto');
@@ -23,36 +24,71 @@ function init(){
      var ocho = document.getElementById('8');
      var nueve = document.getElementById('9');
      var cero = document.getElementById('0');
+     var botonPulsado = document.getElementsByClassName('tecla');
      // Eventos
+     for(let i=0; i< botonPulsado.length; i++){
+       botonPulsado[i].addEventListener('mousedown',function(){
+         botonPulsado[i].style = "transform:scale(0.95,0.95)"
+       });
+       botonPulsado[i].addEventListener('mouseup',function(){
+         botonPulsado[i].style = "transform:scale(1,1)"
+       })
+     }
      uno.onclick = function (e) {
-       display.textContent = display.textContent + "1";
+       var valorTecla = uno.id;
+       validar(valorTecla);
      }
      dos.onclick = function (e) {
-       display.textContent = display.textContent + "2";
+       var valorTecla = dos.id;
+       validar(valorTecla);
      }
      tres.onclick = function (e) {
-       display.textContent = display.textContent + "3";
+       var valorTecla = tres.id;
+       validar(valorTecla);
      }
      cuatro.onclick = function (e) {
-       display.textContent = display.textContent + "4";
+       var valorTecla = cuatro.id;
+       validar(valorTecla);
      }
      cinco.onclick = function (e) {
-       display.textContent = display.textContent + "5";
+       var valorTecla = cinco.id;
+       validar(valorTecla);
      }
      seis.onclick = function (e) {
-       display.textContent = display.textContent + "6";
+       var valorTecla = seis.id;
+       validar(valorTecla);
      }
      siete.onclick = function (e) {
-       display.textContent = display.textContent + "7";
+       var valorTecla = siete.id;
+       validar(valorTecla);
      }
      ocho.onclick = function (e) {
-       display.textContent = display.textContent + "8";
+       var valorTecla = ocho.id;
+       validar(valorTecla);
      }
      nueve.onclick = function (e) {
-       display.textContent = display.textContent + "9";
+       var valorTecla = nueve.id;
+       validar(valorTecla);
      }
      cero.onclick = function (e) {
-       display.textContent = display.textContent + "0";
+       var valorTecla = cero.id;
+       validar(valorTecla);
+     }
+     punto.onclick = function (e) {
+       var valorTecla = "."
+       if (display.textContent.indexOf(".") == -1) {
+         validar(valorTecla);
+       }
+     }
+     signo.onclick = function (e) {
+       if (display.textContent != "0") {
+         if(display.textContent.indexOf("-") != -1){ //si lo encuentra
+           display.textContent = display.textContent.toString();
+           display.textContent = display.textContent.slice(1);
+         } else {
+           display.textContent = "-" + display.textContent;
+         }
+       }
      }
      reset.onclick = function (e) {
        resetear();
@@ -77,6 +113,11 @@ function init(){
        operador = "/";
        limpiar();
      }
+     raiz.onclick = function (e){
+       operando1 = display.textContent;
+       operador = "raiz";
+       resolver();
+     }
      igual.onclick = function (e){
        operando2 = display.textContent;
        resolver();
@@ -86,10 +127,17 @@ function limpiar() {
   display.textContent = "";
 }
 function resetear() {
-  display.textContent = "";
+  display.textContent = "0";
   operando1 = 0;
   operando2 = 0;
   operador = "";
+}
+function validar(valorTecla) {
+  if (display.textContent == "0" && valorTecla != ".") {
+    display.textContent = valorTecla;
+  } else if (display.textContent.length < 8) {
+    display.textContent = display.textContent + valorTecla;
+  }
 }
 function resolver(){
   var res = 0;
@@ -101,12 +149,17 @@ function resolver(){
       res = parseFloat(operando1) - parseFloat(operando2);
       break;
     case "*":
-      res = parseFloat(operando1) - parseFloat(operando2);
+      res = parseFloat(operando1) * parseFloat(operando2);
       break;
     case "/":
-      res = parseFloat(operando1) - parseFloat(operando2);
+      res = parseFloat(operando1) / parseFloat(operando2);
+      break;
+    case "raiz":
+      res = Math.sqrt(parseFloat(operando1));
       break;
   }
-  resetear();
-  display.textContent = res;
+  res = res.toString();
+  display.textContent = res.slice(0, 8);
 }
+
+init();
